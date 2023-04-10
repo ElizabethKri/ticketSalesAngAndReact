@@ -29,4 +29,5 @@ export class TicketService {
   // updateTour(type:ITourTypeSelect): void {
   //   this.ticketSubject.next(type);
   // }
+
 }

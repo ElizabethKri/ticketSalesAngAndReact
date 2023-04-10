@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {IMenuType} from "../../../models/menuType";
 import {ITourTypeSelect} from "../../../models/tours";
+import {TicketService} from "../../../services/tickets/ticket.service";
 
 
 @Component({
@@ -26,9 +27,9 @@ export class AsideComponent implements OnInit {
     {label: 'Одиночный', value: 'single'},
     {label: 'Групповой', value: 'multi'}
   ]
-  private ticketService: any;
 
-  constructor() { }
+
+  constructor(private ticketService: TicketService) { }
 
   ngOnInit(): void {
     this.menuTypes = [
