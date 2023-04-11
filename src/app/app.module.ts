@@ -6,7 +6,8 @@ import {AppRoutingModule} from "./app-routing.module";
 import {AuthService} from "./services/auth/auth.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RouterModule} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {RestInspectorsService} from "./services/inspectors/rest-inspectors.service";
 
 
 @NgModule({
@@ -22,7 +23,11 @@ import {HttpClientModule} from "@angular/common/http";
     HttpClientModule,
 
   ],
-  providers: [AuthService],
+  providers: [{
+    //зарезервированный токен, который хранит в себе в виде массива все экземпляры класса HTTP_INTERCEPTORS
+    //добавляем заголовок авторизации пользователя (ко всем запросам на сервис добавлялся заголовок)
+    provide: HTTP_INTERCEPTORS, useClass: RestInspectorsService, multi: true
+  }],
   bootstrap: [AppComponent]
 })
 

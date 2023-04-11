@@ -5,6 +5,7 @@ import {IUser} from "../../models/users";
 })
 export class UserService {
   private user: IUser;
+  private token: string;
 
 
   constructor() { }
@@ -17,4 +18,14 @@ export class UserService {
     this.user = user
     // записывается пользователь в this.user
   };
+
+  setToken(token: string): void{
+    this.token = token;
+    // записывает приватное поле
+  }
+
+  getToken(): string{
+   return  this.token;
+    // возвращает приватное поле
+  }
 }
