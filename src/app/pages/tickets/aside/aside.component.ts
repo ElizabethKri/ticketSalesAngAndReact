@@ -15,11 +15,7 @@ export class AsideComponent implements OnInit {
   selectedMenuType: IMenuType;
   @Output() updateMenuType: EventEmitter<IMenuType> = new EventEmitter()
 
-//Календарь
-  selectDate(ev: string) {
-    console.log('ev', ev)
-    this.ticketService.updateTour({date:ev})
-  }
+
 
   // Создание в настройках
   tourTypes: ITourTypeSelect[] = [
@@ -46,6 +42,12 @@ export class AsideComponent implements OnInit {
   //Все, одиночный и групповой - настройки
   changeTourType(ev:  {ev: Event, value: ITourTypeSelect}): void {
     this.ticketService.updateTour(ev.value)
+  }
+
+  //Календарь
+  selectDate(ev: string) {
+    console.log('ev', ev)
+    this.ticketService.updateTour({date:ev})
   }
 
 }
