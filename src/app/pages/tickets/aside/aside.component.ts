@@ -27,6 +27,7 @@ export class AsideComponent implements OnInit {
 
   constructor(private ticketService: TicketService) { }
 
+  //добавление меню
   ngOnInit(): void {
     this.menuTypes = [
       {type: 'custom', label : 'Обычное'},
