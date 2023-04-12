@@ -1,9 +1,71 @@
 <div class="ticket-info-wrap">
   <div>
     <a routerLink="/tickets/tickets-list">Назад</a>
-    <div class="mt-3">
+    <div class="mt-4">
+      <h4>Информация о туре</h4>
+    </div>
+    <div class="mt-4">
       {{ticket?.name}}
   </div>
+    <div class="mt-4">
+      <h4>Личная информация</h4>
+      <div class = "mt-3 user-info" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class = "mt-3">
+          <span class="mx-3">Имя</span>
+          <input type="text"
+          class="mt-3"
+          pInputText
+          formControlName = "firstName"/>
+        </div>
+
+          <div class = "mt-3">
+            <span class="mx-3">Фамилия</span>
+            <input type="text"
+                   class="mt-3"
+                   pInputText
+                   formControlName = "lastName"/>
+          </div>
+
+        <div class = "mt-3">
+          <span class="mx-3">Номер карты</span>
+          <input type="text"
+                 class="mt-3"
+                 pInputText
+                 formControlName = "cardNumber"/>
+        </div>
+
+        <div class = "mt-3">
+          <span class="mx-3">Возраст</span>
+          <p-inputNumber
+                 formControlName = "age"
+                 [showButtons] = "true">
+            </p-inputNumber>
+        </div>
+
+        <div class = "mt-3">
+          <span class="mx-3">День рождения</span>
+          <p-calendar
+            formControlName = "birthDay"
+            (onSelect)="selectDate($event)" )>
+          </p-calendar>
+        </div>
+
+        <div class = "mt-3">
+          <span class="mx-3">Гражданство</span>
+          <input type="text"
+                 class="mt-3"
+                 pInputText
+                 formControlName = "citizen"/>
+        </div>
+
+        <div>
+          <div class="mt-4">
+            <button class="btn-success btn" type = "submit"
+                    [disabled]="!userForm.valid">Перейти к оформлению</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="ticket-img">
       <img class="w-100" src="/assets/img/{{ticket?.img}}">
     </div>
