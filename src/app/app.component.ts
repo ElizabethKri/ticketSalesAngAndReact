@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ObservableExampleService} from "./services/testing/testing.service";
+import {ConfigService} from "./services/config-service/config-service.service";
+import {UserService} from "./services/user/user.service";
 
 @Component({
   selector: 'app-root',
@@ -10,13 +12,15 @@ export class AppComponent implements OnInit {
   title = 'ticketSales2022';
   prop: string;
 
-  constructor(private  testing: ObservableExampleService) {
+  constructor(private  testing: ObservableExampleService, private configService: ConfigService) {
     testing.initObservable()
 
   }
 
 
   ngOnInit(){
+    this.configService.configLoad()
+
     //Observable
     //first subscriber
     const myObservable = this.testing.getObservable();
@@ -52,5 +56,6 @@ export class AppComponent implements OnInit {
     //myBehavior.next('new data1 from behaviorSubject');
 
   }
+
 
 }
