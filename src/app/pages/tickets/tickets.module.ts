@@ -13,6 +13,8 @@ import {FormsModule} from "@angular/forms";
 import {BlockStyleDirective} from "../../directive/block-style.directive";
 import {InputTextModule} from "primeng/inputtext";
 import {CalendarModule} from "primeng/calendar";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import {CalendarModule} from "primeng/calendar";
     MenubarModule,
     DropdownModule,
     InputTextModule,
-    CalendarModule
-  ]
+    CalendarModule,
+    ToastModule
+  ],
+  providers: [MessageService]
 })
 export class TicketsModule { }

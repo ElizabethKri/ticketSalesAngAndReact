@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {IMenuType} from "../../../models/menuType";
 import {ITourTypeSelect} from "../../../models/tours";
 import {TicketService} from "../../../services/tickets/ticket.service";
+import {MessageService} from "primeng/api";
 
 
 @Component({
@@ -25,7 +26,7 @@ export class AsideComponent implements OnInit {
   ]
 
 
-  constructor(private ticketService: TicketService) { }
+  constructor(private ticketService: TicketService, private messageService: MessageService) { }
 
   //добавление меню
   ngOnInit(): void {
@@ -49,6 +50,15 @@ export class AsideComponent implements OnInit {
   selectDate(ev: string) {
     console.log('ev', ev)
     this.ticketService.updateTour({date:ev})
+  }
+
+  //обработка ошибок
+  initRestError(): void {
+    this.ticketService.getError().subscribe((data) => {
+
+    }, (err)=> {
+      this.messageService.add({severity:'error', summary: 'Ошибка', detail: 'Ошибка сервера'})
+    });
   }
 
 }
