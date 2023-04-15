@@ -43,12 +43,11 @@ export class RegistrationComponent implements OnInit {
       this.authService.setUser(userObj);
       this.messageService.add({severity:'success', summary: 'Успех!', detail: 'Регистрация прошла успешно'});
     }
-    if (this.saveValue){
-      window.localStorage.setItem('userLogin:' + `${userObj.login}`, JSON.stringify(userObj));
-    }
-
     else {
       this.messageService.add({severity:'warn', summary: 'Неудача', detail: 'Пользователь уже зарегистрирован'});
+    }
+    if (this.saveValue){
+      window.localStorage.setItem('userLogin:' + `${userObj.login}`, JSON.stringify(userObj));
     }
 
   }
