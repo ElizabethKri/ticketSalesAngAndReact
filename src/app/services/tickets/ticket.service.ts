@@ -37,6 +37,11 @@ export class TicketService {
       }
     ));
   }
+  //возвращает результат вызова getRestError
+   getError(): Observable<ITour> {
+    return this.ticketServiceRest.getRestError()
+   }
+
 
 
 }
