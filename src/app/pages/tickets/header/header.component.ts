@@ -17,24 +17,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // Отображение даты
   time: Date;
   private timerInterval: number;
-  public user: IUser;
+  public user: IUser | null;
 
 
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.items = [
-      {
-        label: 'Билеты',
-        routerLink: ['tickets-list']
-        },
-      {
-        label: 'Выйти',
-        routerLink: ['/auth']
-      },
-
-    ];
+    this.items = this.initMenuItems()
     // запись пользователя
     this.user = this.userService.getUser()
 
@@ -71,7 +61,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       },
       {
         label: 'Выйти',
-        routerLink:['/auth']
+        routerLink:['/auth'],
+        command: () => {
+          this.userService.removeUser()
+        }
       },
 
     ];

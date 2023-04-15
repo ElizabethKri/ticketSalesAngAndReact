@@ -4,13 +4,13 @@ import {IUser} from "../../models/users";
   providedIn: 'root'
 })
 export class UserService {
-  private user: IUser;
-  private token: string;
+  private user: IUser | null;
+  private token: string | null;
 
 
   constructor() { }
 
-  getUser(): IUser {
+  getUser(): IUser | null {
     return this.user
     // возвращается user
   };
@@ -21,11 +21,19 @@ export class UserService {
 
   setToken(token: string): void{
     this.token = token;
+    window.localStorage.setItem('token', token)
+
     // записывает приватное поле
   }
 
-  getToken(): string{
-   return  this.token;
+  getToken(): string | null{
+   return  this.token || window.localStorage.getItem('token');
     // возвращает приватное поле
   }
+
+  removeUser(): void {
+  this.user = null;
+  this.token = null;
+
+}
 }
