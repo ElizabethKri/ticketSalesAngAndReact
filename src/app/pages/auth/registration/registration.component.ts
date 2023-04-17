@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MessageService} from 'primeng/api';
 import {IUser} from "../../../models/users";
 import {AuthService} from "../../../services/auth/auth.service";
+import {ConfigService} from "../../../services/config-service/config-service.service";
 
 @Component({
   selector: 'app-registration',
@@ -15,12 +16,14 @@ export class RegistrationComponent implements OnInit {
   email: string;
   cardNumber: string;
   saveValue: boolean;
+  showCardNumber: boolean;
 
 
   constructor(private messageService: MessageService,
               private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.showCardNumber = ConfigService.config.useUserCard
   }
 
   saveUser(): void{

@@ -22,9 +22,9 @@ export class ConfigService {
 
   }
 
-  loadPromise() {
+  loadPromise(): Promise <any> {
     const jsonFile = `assets/config/config.json`;
-    const configPromise = new Promise<void>((resolve, reject) => {
+    const configPromise = new Promise<IConfig>((resolve, reject) => {
       //после того как метод от сервера успешно получен вызываем resolve
       this.http.get(jsonFile).toPromise().then((response: any) => {
         if (response && typeof (response) === 'object') {
@@ -32,7 +32,7 @@ export class ConfigService {
           const config = ConfigService.config;
           if (config) {
             // set origin host
-            resolve();
+            resolve(config);
           } else {
             reject('Ошибка при инициализации конфига - неверный формат ' + config);
           }

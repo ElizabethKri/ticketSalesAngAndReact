@@ -30,7 +30,7 @@
            pInputText
            [(ngModel)]="email"/>
   </div>
-  <div>
+  <div *ngIf="showCardNumber">
     <span class="mx-3">Номер карты</span>
     <input type="text"
            class="mt-3"
