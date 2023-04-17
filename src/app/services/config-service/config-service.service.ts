@@ -11,7 +11,7 @@ export class ConfigService {
   }
 
   static config: IConfig;
-
+//запрос на локальный файл и записывает конфигурацию
   configLoad(): void {
     const jsonFile = `assets/config/config.json`;
     this.http.get<IConfig>(jsonFile).subscribe((data) => {
@@ -25,6 +25,7 @@ export class ConfigService {
   loadPromise() {
     const jsonFile = `assets/config/config.json`;
     const configPromise = new Promise<void>((resolve, reject) => {
+      //после того как метод от сервера успешно получен вызываем resolve
       this.http.get(jsonFile).toPromise().then((response: any) => {
         if (response && typeof (response) === 'object') {
           ConfigService.config = response;
@@ -38,11 +39,12 @@ export class ConfigService {
         } else {
           reject('Ошибка при инициализации конфига - неверный формат ответа ' + response);
         }
+        // позволяет регулировать ошибки
       }).catch((response: any) => {
         reject(`Ошибка при загрузки файла '${jsonFile}': ${JSON.stringify(response)}`);
       });
     });
-
+    // формирование массива
     const promiseArr = [configPromise];
     return Promise.all(promiseArr);
 

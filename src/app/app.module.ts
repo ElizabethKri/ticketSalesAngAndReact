@@ -10,6 +10,11 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RestInspectorsService} from "./services/inspectors/rest-inspectors.service";
 import {ConfigService} from "./services/config-service/config-service.service";
 
+function initializeApp(config: ConfigService) {
+  return () => config.loadPromise().then(() => {
+    console.log('---CONFIG LOADED--', ConfigService.config)
+  });
+}
 
 @NgModule({
   declarations: [
@@ -27,8 +32,11 @@ import {ConfigService} from "./services/config-service/config-service.service";
   providers: [
     ConfigService,
     {
+      //токен
       provide: APP_INITIALIZER,
+      // определяем, что должно вызываться при старте
       useFactory: initializeApp,
+      //что сначала запускаем
       deps: [ConfigService], multi: true
     },
     {
@@ -41,8 +49,4 @@ import {ConfigService} from "./services/config-service/config-service.service";
 
 export class AppModule { }
 
-function initializeApp(config: ConfigService) {
-  return () => config.loadPromise().then(() => {
-    console.log('---CONFIG LOADED--', ConfigService.config)
-  });
-}
+
