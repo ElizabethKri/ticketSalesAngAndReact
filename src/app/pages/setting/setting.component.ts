@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ObservableExampleService} from "../../services/testing/testing.service";
-import {Subject, Subscription} from "rxjs";
+import {Subject, Subscription, take} from "rxjs";
+import {SettingService} from "../../services/setting/setting.service";
 
 @Component({
   selector: 'app-setting',
@@ -10,36 +11,56 @@ import {Subject, Subscription} from "rxjs";
 export class SettingComponent implements OnInit, OnDestroy {
   private subjectScope: Subject<string>;
   private  subjectUnsubscribe: Subscription;
+  settingsData: Subscription;
+  settingsDataSubject: Subscription;
 
 
-  constructor(private testing : ObservableExampleService) {
+  constructor(private testing : ObservableExampleService,
+              private settingService: SettingService) {
 
   }
 
   ngOnInit(): void {
-    this.subjectScope = this.testing.getSubject();
+    //settingsData observable
+    //каждый раз, когда входим в настройки
+    this.settingsData = this.settingService.loadUserSettings().subscribe((data) =>{
+      console.log('settings data', data)
 
-    // const myObservable = this.testing.getSubject();
-    // // сразу получаем данные
-    // const unsubscribe = myObservable.subscribe((data) => {
-    //   console.log('***observer data', data)
-    // })
+    //setting data subject
+      //данные получаем, после того, как кликаем обновить настройки
+      //получаем данные 1 раз и отписываемся
+    this.settingsDataSubject = this.settingService.getSettingsSubjectObservable().pipe(take(1)).subscribe(
+    (data) => {
+        console.log('settings data from subject', data)
+      })
+    })
+
+    // this.subjectScope = this.testing.getSubject();
     //
-    // unsubscribe.unsubscribe();
-
-
-    // подписка
-    this.subjectUnsubscribe = this.subjectScope.subscribe((data) => {
-       console.log('***data', data)
-    });
-    //отправляем данные
-    this.subjectScope.next('subData value');
+    // // const myObservable = this.testing.getSubject();
+    // // // сразу получаем данные
+    // // const unsubscribe = myObservable.subscribe((data) => {
+    // //   console.log('***observer data', data)
+    // // })
+    // //
+    // // unsubscribe.unsubscribe();
+    //
+    //
+    // // подписка
+    // this.subjectUnsubscribe = this.subjectScope.subscribe((data) => {
+    //    console.log('***data', data)
+    // });
+    // //отправляем данные
+    // this.subjectScope.next('subData value');
 
   }
   // Отписка
   ngOnDestroy() {
-    this.subjectUnsubscribe.unsubscribe()
+    this.settingsData.unsubscribe();
+    // this.subjectUnsubscribe.unsubscribe()
   }
+
+
 
 
 }

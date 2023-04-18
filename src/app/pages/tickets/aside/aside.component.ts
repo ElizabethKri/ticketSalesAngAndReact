@@ -3,6 +3,7 @@ import {IMenuType} from "../../../models/menuType";
 import {ITourTypeSelect} from "../../../models/tours";
 import {TicketService} from "../../../services/tickets/ticket.service";
 import {MessageService} from "primeng/api";
+import {SettingService} from "../../../services/setting/setting.service";
 
 
 @Component({
@@ -26,7 +27,8 @@ export class AsideComponent implements OnInit {
   ]
 
 
-  constructor(private ticketService: TicketService, private messageService: MessageService) { }
+  constructor(private ticketService: TicketService, private messageService: MessageService,
+              private settingService: SettingService) { }
 
   //добавление меню
   ngOnInit(): void {
@@ -59,6 +61,12 @@ export class AsideComponent implements OnInit {
     }, (err)=> {
       this.messageService.add({severity:'error', summary: 'Ошибка', detail: 'Ошибка сервера'})
     });
+  }
+// при каждом клике рассылка происходит
+  initSettingsData():void{
+    this.settingService.loadUserSettingsSubject({
+      saveToken: false,
+    })
   }
 
 }
