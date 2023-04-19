@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {ITour} from "../../../models/tours";
+import {INearestTour, ITour, ITourLocation} from "../../../models/tours";
 import {ActivatedRoute} from "@angular/router";
 import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
 import {IUser} from "../../../models/users";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
+import {forkJoin} from "rxjs";
+import {TicketService} from "../../../services/tickets/ticket.service";
 
 
 
@@ -18,9 +20,13 @@ export class TicketItemComponent implements OnInit {
   user: IUser | null;
   userForm: FormGroup;
 
+  nearestTours: INearestTour[];
+  tourLocation: ITourLocation[];
+
   constructor(private route: ActivatedRoute,
               private ticketStorage: TiсketsStorageService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private ticketService: TicketService) { }
 
   ngOnInit(): void {
     //записываем пользователя
@@ -33,7 +39,14 @@ export class TicketItemComponent implements OnInit {
       birthDay: new FormControl(''),
       age: new FormControl(),
       citizen: new FormControl('')
-    })
+    });
+    //формирует объединение массива с их значениями !важен порядок
+     forkJoin([this.ticketService.getNearestTours(), this.ticketService.getToursLocation()]).subscribe((data) =>{
+       console.log('data', data)
+       this.nearestTours = data[0];
+       this.tourLocation = data[1];
+     })
+
 
     //считываем параметры
     const routeIdParam = this.route.snapshot.paramMap.get('id'); // значение, которое передано при маршрутизации (связано с тек. роутингом)

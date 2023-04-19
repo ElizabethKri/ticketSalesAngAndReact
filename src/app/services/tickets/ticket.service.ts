@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {TicketRestService} from "../rest/ticket-rest.service";
 import {map, Observable, Subject} from "rxjs";
-import {ITour} from "../../models/tours"
+import {INearestTour, ITour, ITourLocation} from "../../models/tours"
 import {ITourTypeSelect} from "../../models/tours";
 
 @Injectable({
@@ -38,9 +38,17 @@ export class TicketService {
     ));
   }
   //возвращает результат вызова getRestError
-   getError(): Observable<ITour> {
+   getError(): Observable<any> {
     return this.ticketServiceRest.getRestError()
    }
+
+   getNearestTours(): Observable<INearestTour[]>{
+   return this.ticketServiceRest.getNearestTickets()
+   }
+
+   getToursLocation(): Observable<ITourLocation[]>{
+   return this.ticketServiceRest.getLocationList()
+}
 
 
 
