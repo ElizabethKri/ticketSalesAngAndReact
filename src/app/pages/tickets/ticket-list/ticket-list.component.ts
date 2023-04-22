@@ -23,6 +23,7 @@ export class TicketListComponent implements OnInit {
   @ViewChild('ticketSearch') ticketSearch: ElementRef;
   searchTicketSub: Subscription;
   ticketSearchValue: string;
+  arr: string;
 
 
   constructor(private ticketService: TicketService,
@@ -81,17 +82,19 @@ export class TicketListComponent implements OnInit {
     this.searchTicketSub = fromEventOberver.pipe(
       debounceTime(200)).subscribe((ev: any) => {
         if (this.ticketSearchValue) {
-          this.tickets = this.ticketsCopy.filter((el) => el.name.includes(this.ticketSearchValue));
+          //чтобы искалось при любом регистре
+          const arr = this.ticketSearchValue[0].toUpperCase() + this.ticketSearchValue.slice(1).toLowerCase()
+          this.tickets = this.ticketsCopy.filter((el) => el.name.includes(arr));
         } else {
           this.tickets = [...this.ticketsCopy]
         }
       }
     );
   }
-
   //выполняется отписка
   ngOnDestroy() {
     this.tourUnsubscriber.unsubscribe();
+    this.searchTicketSub.unsubscribe();
   }
 
 
