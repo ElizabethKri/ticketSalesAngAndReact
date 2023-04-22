@@ -4,7 +4,7 @@ import {ITour, ITourTypeSelect} from "../../../models/tours";
 import { Router} from "@angular/router";
 import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
 import {BlockStyleDirective} from "../../../directive/block-style.directive";
-import {Subscription} from "rxjs";
+import {debounceTime, fromEvent, Subscription} from "rxjs";
 
 
 @Component({
@@ -20,6 +20,9 @@ export class TicketListComponent implements OnInit {
 
   @ViewChild('tourWrap', {read: BlockStyleDirective}) blockDirective: BlockStyleDirective;
   @ViewChild('tourWrap') tourWrap: ElementRef;
+  @ViewChild('ticketSearch') ticketSearch: ElementRef;
+  searchTicketSub: Subscription;
+  ticketSearchValue: string;
 
 
   constructor(private ticketService: TicketService,
@@ -73,15 +76,25 @@ export class TicketListComponent implements OnInit {
       });
     });
   }
+  ngAfterViewInit(){
+    const fromEventOberver = fromEvent(this.ticketSearch.nativeElement, "keyup")
+    this.searchTicketSub = fromEventOberver.pipe(
+      debounceTime(200)).subscribe((ev: any) => {
+        if (this.ticketSearchValue) {
+          this.tickets = this.ticketsCopy.filter((el) => el.name.includes(this.ticketSearchValue));
+        } else {
+          this.tickets = [...this.ticketsCopy]
+        }
+      }
+    );
+  }
 
   //выполняется отписка
   ngOnDestroy() {
     this.tourUnsubscriber.unsubscribe();
   }
 
-  ngAfterViewInit(){
 
-  }
   goToTicketInfoPage(item: ITour){
     this.router.navigate([`/tickets/ticket/${item.id}`])
   }

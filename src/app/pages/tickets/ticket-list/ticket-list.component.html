@@ -1,20 +1,24 @@
-<div *ngIf="tickets">
+
   <div *ngIf="renderComplete">
   <div>
     <p>Количество элементов: {{tickets.length}}</p> <!-- или {{tourWrap.childElementCount}} -->
     <p>Активный элемент: {{blockDirective.activeElementIndex}}</p>
     <!-- Поиск туров -->
-    <div>
-      Найти тур: <input (input)="findTours($event)" type="text" pInputText />
-    </div>
-    </div>
+    <!--     <div>
+          Найти тур: <input (input)="findTours($event)" type="text" pInputText />
+        </div>-->
+        </div>
+      </div>
+  <div>
+    <input #ticketSearch [(ngModel)]= "ticketSearchValue" type="text" pInputText>
   </div>
-<!-- Директива -->
+    <!-- Директива -->
 <div appBlockStyle
+     *ngIf="tickets"
      #tourWrap
      #blockDirective ='blocksStyle'
      [selector]="'.ticket-item'"
-     [initFirst] = "true"
+     [initFirst] = "false"
      (renderComplete)="directiveRenderComplete($event)"
 
   class="d-flex flex-wrap justify-content-around">
@@ -32,4 +36,4 @@
     </div>
   </div>
 </div>
-</div>
+
