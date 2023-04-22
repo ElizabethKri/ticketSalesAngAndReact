@@ -82,9 +82,11 @@ export class TicketListComponent implements OnInit {
     this.searchTicketSub = fromEventOberver.pipe(
       debounceTime(200)).subscribe((ev: any) => {
         if (this.ticketSearchValue) {
-          //чтобы искалось при любом регистре
-          const arr = this.ticketSearchValue[0].toUpperCase() + this.ticketSearchValue.slice(1).toLowerCase()
-          this.tickets = this.ticketsCopy.filter((el) => el.name.includes(arr));
+          this.tickets = this.ticketsCopy.filter((el) => {
+            //проверка на строку, ищет при всех регистрах
+            const nameToLower = typeof (el?.name) === "string" ? el.name.toLowerCase(): '';
+            return nameToLower.includes(this.ticketSearchValue.toLowerCase());
+          });
         } else {
           this.tickets = [...this.ticketsCopy]
         }
