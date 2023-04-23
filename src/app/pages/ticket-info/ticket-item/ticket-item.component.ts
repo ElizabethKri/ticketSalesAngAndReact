@@ -43,7 +43,7 @@ export class TicketItemComponent implements OnInit {
     //формирует объединение массива с их значениями !важен порядок
      forkJoin([this.ticketService.getNearestTours(), this.ticketService.getToursLocation()]).subscribe((data) =>{
        console.log('data', data)
-       this.nearestTours = data[0];
+       this.nearestTours = this.ticketService.transformData(data[0],data[1]);
        this.tourLocation = data[1];
      })
 
