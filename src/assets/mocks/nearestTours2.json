@@ -1,0 +1,10 @@
+{
+  "name": "tour2",
+  "description": "Discover Pearls of France & Italy",
+  "tourOperator": "Emerald Waterways",
+  "price": "€3,579",
+  "img": "pic2.jpg",
+  "type": "multi",
+  "date": "2022-10-22",
+  "locationId": "fa51-21a5-315b-ff21"
+}
