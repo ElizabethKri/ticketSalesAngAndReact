@@ -66,13 +66,19 @@
         </div>
       </div>
     </div>
+    <div class="mt-4">
+      <h4>Похожие туры</h4>
+    <div>
+      <input #ticketSearch [(ngModel)]="ticketSearchValue" type="text" pInputText/>
+    </div>
     <p-carousel [value] = "nearestTours">
       <ng-template let-tour pTemplate="item">
-        {{tour.name}} {{tour.region.name}}
+        {{tour.name}} / {{tour.region.name}}
         <div class ="ticket-img-nearest">
           <img class = "w-100 h-100" src="/assets/img/{{tour.img}}">
         </div>
       </ng-template>
     </p-carousel>
+    </div>
 </div>
 </div>

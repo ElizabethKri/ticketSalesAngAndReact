@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {INearestTour, ITour, ITourLocation} from "../../../models/tours";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ICustomTicketData, INearestTour, ITour, ITourLocation} from "../../../models/tours";
 import {ActivatedRoute} from "@angular/router";
 import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
 import {IUser} from "../../../models/users";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
-import {forkJoin} from "rxjs";
+import {forkJoin, fromEvent, Subscription} from "rxjs";
 import {TicketService} from "../../../services/tickets/ticket.service";
+
 
 
 
@@ -20,8 +21,15 @@ export class TicketItemComponent implements OnInit {
   user: IUser | null;
   userForm: FormGroup;
 
-  nearestTours: INearestTour[];
+  nearestTours: ICustomTicketData[];
   tourLocation: ITourLocation[];
+  ticketSearchValue: string;
+  searchTicketSub: Subscription;
+  ticketRestSub: Subscription;
+  //определяем различные инпоинты, тип запроса на сервер
+  searchTypes = [1, 2, 3]
+
+  @ViewChild('ticketSearch') ticketSearch: ElementRef;
 
   constructor(private route: ActivatedRoute,
               private ticketStorage: TiсketsStorageService,
@@ -43,8 +51,8 @@ export class TicketItemComponent implements OnInit {
     //формирует объединение массива с их значениями !важен порядок
      forkJoin([this.ticketService.getNearestTours(), this.ticketService.getToursLocation()]).subscribe((data) =>{
        console.log('data', data)
-       this.nearestTours = this.ticketService.transformData(data[0],data[1]);
        this.tourLocation = data[1];
+       this.nearestTours = this.ticketService.transformData(data[0],data[1]);
      })
 
 
@@ -68,6 +76,28 @@ export class TicketItemComponent implements OnInit {
     // this.userForm.patchValue ({
     // cardNumber: this.user.cardNumber
     //});
+
+    const fromEventObserver = fromEvent(this.ticketSearch.nativeElement, 'keyup')
+    this.searchTicketSub = fromEventObserver.subscribe((ev: any) => {
+      this.initSearchTour()
+    })
+  }
+
+  ngOnDestroy(): void{
+    this.searchTicketSub.unsubscribe();
+  }
+
+  initSearchTour():void {
+    //определяем значение, которое будет в рандомном порядке (0.1, 0.2, 0.3)
+    const type = Math.floor(Math.random() * this.searchTypes.length);
+    //в случае долгого запроса могли от него отписаться
+    if (this.ticketRestSub && !this.searchTicketSub.closed) {
+      this.ticketRestSub.unsubscribe();
+    }
+    //записываем результат запроса на сервер
+    this.ticketRestSub = this.ticketService.getRandomNearestEvent(type).subscribe((data) => {
+      this.nearestTours = this.ticketService.transformData([data], this.tourLocation)
+    })
   }
 
   onSubmit(): void{

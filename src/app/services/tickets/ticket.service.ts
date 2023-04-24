@@ -59,6 +59,9 @@ export class TicketService {
      });
      return newTicketData;
    }
+  getRandomNearestEvent(type: number): Observable<INearestTour>{
+   return this.ticketServiceRest.getRandomNearestEvent(type);
+  }
 
 
 
