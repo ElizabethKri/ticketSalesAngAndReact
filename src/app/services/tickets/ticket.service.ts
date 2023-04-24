@@ -49,6 +49,7 @@ export class TicketService {
    getToursLocation(): Observable<ITourLocation[]>{
    return this.ticketServiceRest.getLocationList()
 }
+//обращаемся к массиву регион, находим через id
    transformData (data: INearestTour[], regions: ITourLocation[]): ICustomTicketData[]{
      const newTicketData: ICustomTicketData[] = [];
      data.forEach((el) => {
