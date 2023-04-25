@@ -103,6 +103,16 @@ export class TicketItemComponent implements OnInit {
   onSubmit(): void{
 
   }
+// при заполнении формы, запишется в консоль
+  initTour(): void {
+    //получаем наши данные
+    const userData = this.userForm.getRawValue();
+    //информация о туре + личная информация
+    const postData = {...this.ticket, ...userData};
+    this.ticketService.sendTourData(postData).subscribe()
+    // console.log('postData', postData)
+    // console.log('   this.userForm.getRawValue()', this.userForm.getRawValue())
+  }
 
   selectDate(ev: Event): void{
 

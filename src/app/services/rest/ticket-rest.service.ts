@@ -42,4 +42,8 @@ export class TicketRestService {
     }
   }
 
+  sendTourData(data: any): Observable<any>{
+    return this.http.post('/assets/mocks/', data)
+  }
+
 }
