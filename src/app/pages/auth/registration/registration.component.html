@@ -30,7 +30,8 @@
            pInputText
            [(ngModel)]="email"/>
   </div>
-  <div *ngIf="showCardNumber">
+<!--  если в конфигурации будет указано false useUserCard, то используется noSelected-->
+  <div *ngIf="showCardNumber; else noSelected">
     <span class="mx-3">Номер карты</span>
     <input type="text"
            class="mt-3"
@@ -59,4 +60,8 @@
       Зарегистрироваться</button>
   </div>
 </div>
+
+<ng-template #noSelected>
+  <p>Карта не выбрана</p>
+</ng-template>
 

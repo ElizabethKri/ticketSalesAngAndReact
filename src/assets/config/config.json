@@ -2,5 +2,5 @@
 {
   "serverProtocol": "http",
   "baseIndexHref": "/",
-  "useUserCard": true
+  "useUserCard": false
 }
