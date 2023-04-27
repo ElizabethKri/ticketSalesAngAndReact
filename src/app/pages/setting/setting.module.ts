@@ -7,16 +7,19 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import {TabViewModule} from "primeng/tabview";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
+import { StatisticComponent } from './statistic/statistic.component';
+import {TableModule} from "primeng/table";
 
 
 @NgModule({
-  declarations: [SettingComponent, ChangePasswordComponent],
+  declarations: [SettingComponent, ChangePasswordComponent, StatisticComponent],
   imports: [
     CommonModule,
     SettingRoutingModule,
     TabViewModule,
     FormsModule,
-    InputTextModule
+    InputTextModule,
+    TableModule
   ]
 })
 export class SettingModule { }
