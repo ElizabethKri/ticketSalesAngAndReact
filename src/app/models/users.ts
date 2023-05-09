@@ -2,7 +2,8 @@ export interface IUser{
   login: string,
   email?: string,
   psw: string,
-  cardNumber?: string
+  cardNumber?: string,
+  id: string,
 }
 export interface IStatisticUser {
   id: number,
