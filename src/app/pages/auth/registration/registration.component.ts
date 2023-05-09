@@ -3,6 +3,7 @@ import {MessageService} from 'primeng/api';
 import {IUser} from "../../../models/users";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ConfigService} from "../../../services/config-service/config-service.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +21,8 @@ export class RegistrationComponent implements OnInit {
 
 
   constructor(private messageService: MessageService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
     this.showCardNumber = ConfigService.config.useUserCard
@@ -41,7 +43,14 @@ export class RegistrationComponent implements OnInit {
       login: this.login,
       email: this.email
     }
-      //Пользователь есть/нет
+
+    const userNest = {
+      age: 30,
+      name: 'Test'
+    }
+    this.http.post('http://localhost:3000/users/', userNest).subscribe((data) =>{})
+
+    //Пользователь есть/нет
     if (!this.authService.isUserExists(userObj)){
       this.authService.setUser(userObj);
       this.messageService.add({severity:'success', summary: 'Успех!', detail: 'Регистрация прошла успешно'});
