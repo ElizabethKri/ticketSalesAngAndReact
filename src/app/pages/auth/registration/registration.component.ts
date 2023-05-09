@@ -19,6 +19,7 @@ export class RegistrationComponent implements OnInit {
   saveValue: boolean;
   showCardNumber: boolean;
   id: string;
+  saveUserInStore: boolean;
 
 
   constructor(private messageService: MessageService,
@@ -50,6 +51,7 @@ export class RegistrationComponent implements OnInit {
       age: 30,
       name: 'Test'
     }
+
     this.http.post('http://localhost:3000/users/', userObj).subscribe((data) =>{
       if (this.saveUserInStore) {
         const objUserJsonStr = JSON.stringify(userObj);
@@ -61,17 +63,17 @@ export class RegistrationComponent implements OnInit {
       this.messageService.add({severity:'warn', summary:'Пользователь уже зарегистрирован'});
     });
 
-    //Пользователь есть/нет
-    if (!this.authService.isUserExists(userObj)){
-      this.authService.setUser(userObj);
-      this.messageService.add({severity:'success', summary: 'Успех!', detail: 'Регистрация прошла успешно'});
-    }
-    else {
-      this.messageService.add({severity:'warn', summary: 'Неудача', detail: 'Пользователь уже зарегистрирован'});
-    }
-    if (this.saveValue){
-      window.localStorage.setItem('userLogin:' + `${userObj.login}`, JSON.stringify(userObj));
-    }
+    // //Пользователь есть/нет
+    // if (!this.authService.isUserExists(userObj)){
+    //   this.authService.setUser(userObj);
+    //   this.messageService.add({severity:'success', summary: 'Успех!', detail: 'Регистрация прошла успешно'});
+    // }
+    // else {
+    //   this.messageService.add({severity:'warn', summary: 'Неудача', detail: 'Пользователь уже зарегистрирован'});
+    // }
+    // if (this.saveValue){
+    //   window.localStorage.setItem('userLogin:' + `${userObj.login}`, JSON.stringify(userObj));
+    // }
 
   }
 
