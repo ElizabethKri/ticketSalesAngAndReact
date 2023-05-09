@@ -18,6 +18,7 @@ export class RegistrationComponent implements OnInit {
   cardNumber: string;
   saveValue: boolean;
   showCardNumber: boolean;
+  id: string;
 
 
   constructor(private messageService: MessageService,
@@ -41,7 +42,8 @@ export class RegistrationComponent implements OnInit {
       psw: this.psw,
       cardNumber: this.cardNumber,
       login: this.login,
-      email: this.email
+      email: this.email,
+      id: this.id,
     }
 //test
     const userNest = {
