@@ -4,6 +4,7 @@ import {IUser} from "../../../models/users";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
+import {HttpClient} from "@angular/common/http";
 
 
 @Component({
@@ -25,11 +26,13 @@ export class AuthorizationComponent implements OnInit, OnChanges, OnDestroy {
   selectedValue: boolean;
   cardNumber: string;
   authTextButton: string;
+  id: string;
 
   constructor(private authService: AuthService,
               private messageService: MessageService,
               private router: Router,
-              private userService: UserService ) { }
+              private userService: UserService,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
     this.authTextButton = "Авторизоваться"
@@ -63,18 +66,33 @@ export class AuthorizationComponent implements OnInit, OnChanges, OnDestroy {
     const authUser: IUser ={
       psw: this.psw,
       login: this.login,
-      cardNumber: this.cardNumber
+      cardNumber: this.cardNumber,
+      id: this.id,
     }
-    if (this.authService.checkUser(authUser)) {
-      // запись пользователя
+    this.http.post<IUser>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data: IUser) => {
+
       this.userService.setUser(authUser);
-      //передача рандомного токена
-      this.userService.setToken('user-private-token')
+      const token: string = 'user-private-token'+data.id;
+      this.userService.setToken(token);
+      this.userService.setToStore(token);
+
+
       this.router.navigate(['tickets/tickets-list']);
-      }
-    else {
-      this.messageService.add({severity:'error', summary: 'Неудача', detail: 'Неправильно введен логин или пароль'});
-    }
+
+    }, ()=> {
+      this.messageService.add({severity:'warn', summary:"Ошибка"});
+    });
+
+    // if (this.authService.checkUser(authUser)) {
+    //   // запись пользователя
+    //   this.userService.setUser(authUser);
+    //   //передача рандомного токена
+    //   this.userService.setToken('user-private-token')
+    //   this.router.navigate(['tickets/tickets-list']);
+    //   }
+    // else {
+    //   this.messageService.add({severity:'error', summary: 'Неудача', detail: 'Неправильно введен логин или пароль'});
+    // }
 
   }
 

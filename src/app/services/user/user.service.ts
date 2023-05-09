@@ -25,6 +25,10 @@ export class UserService {
 
     // записывает приватное поле
   }
+  setToStore(token: string): void{
+    this.token = token;
+    window.localStorage.setItem('token', token)
+  }
 
   getToken(): string | null{
    return  this.token || window.localStorage.getItem('token');
