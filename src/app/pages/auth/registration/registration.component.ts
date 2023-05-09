@@ -43,12 +43,21 @@ export class RegistrationComponent implements OnInit {
       login: this.login,
       email: this.email
     }
-
+//test
     const userNest = {
       age: 30,
       name: 'Test'
     }
-    this.http.post('http://localhost:3000/users/', userNest).subscribe((data) =>{})
+    this.http.post('http://localhost:3000/users/', userObj).subscribe((data) =>{
+      if (this.saveUserInStore) {
+        const objUserJsonStr = JSON.stringify(userObj);
+        window.localStorage.setItem('user_'+userObj.login, objUserJsonStr);
+      }
+      this.messageService.add({severity:'success', summary:'Регистрация прошла успешно'});
+
+    }, ()=> {
+      this.messageService.add({severity:'warn', summary:'Пользователь уже зарегистрирован'});
+    });
 
     //Пользователь есть/нет
     if (!this.authService.isUserExists(userObj)){
