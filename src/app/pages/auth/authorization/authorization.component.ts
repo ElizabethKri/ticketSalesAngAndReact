@@ -70,13 +70,12 @@ export class AuthorizationComponent implements OnInit, OnChanges, OnDestroy {
       cardNumber: this.cardNumber,
       id: this.id,
     }
-    this.http.post<IUser>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data: IUser) => {
+    this.http.post<{access_token: string}>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data: IUser) => {
 
       this.userService.setUser(authUser);
-      const token: string = 'user-private-token'+data.id;
+      const token: string = data.access_token;
       this.userService.setToken(token);
       this.userService.setToStore(token);
-
 
       this.router.navigate(['tickets/tickets-list']);
 
