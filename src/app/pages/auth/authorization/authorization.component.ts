@@ -4,7 +4,8 @@ import {IUser} from "../../../models/users";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {ServerError} from "../../../models/error";
 
 
 @Component({
@@ -79,8 +80,9 @@ export class AuthorizationComponent implements OnInit, OnChanges, OnDestroy {
 
       this.router.navigate(['tickets/tickets-list']);
 
-    }, ()=> {
-      this.messageService.add({severity:'warn', summary:"Ошибка"});
+    }, (err: HttpErrorResponse)=> {
+      const serverError = <ServerError>err.error;
+      this.messageService.add({severity:'warn', summary: serverError.errorText});
     });
 
     // if (this.authService.checkUser(authUser)) {

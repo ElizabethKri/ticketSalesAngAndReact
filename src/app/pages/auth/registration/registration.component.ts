@@ -3,7 +3,8 @@ import {MessageService} from 'primeng/api';
 import {IUser} from "../../../models/users";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ConfigService} from "../../../services/config-service/config-service.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {ServerError} from "../../../models/error";
 
 @Component({
   selector: 'app-registration',
@@ -59,8 +60,12 @@ export class RegistrationComponent implements OnInit {
       }
       this.messageService.add({severity:'success', summary:'Регистрация прошла успешно'});
 
-    }, ()=> {
-      this.messageService.add({severity:'warn', summary:'Пользователь уже зарегистрирован'});
+    }, (err: HttpErrorResponse)=> {
+      console.log('err', err)
+      const serverError = <ServerError>err.error;
+      this.messageService.add({severity:'warn', summary:serverError.errorText
+      // this.messageService.add({severity:'warn', summary:'Пользователь уже зарегистрирован'
+      });
     });
 
     // //Пользователь есть/нет
