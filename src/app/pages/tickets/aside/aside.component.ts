@@ -4,6 +4,7 @@ import {ITourTypeSelect} from "../../../models/tours";
 import {TicketService} from "../../../services/tickets/ticket.service";
 import {MessageService} from "primeng/api";
 import {SettingService} from "../../../services/setting/setting.service";
+import {HttpClient} from "@angular/common/http";
 
 
 @Component({
@@ -28,7 +29,7 @@ export class AsideComponent implements OnInit {
 
 
   constructor(private ticketService: TicketService, private messageService: MessageService,
-              private settingService: SettingService) { }
+              private settingService: SettingService, private http: HttpClient) { }
 
   //добавление меню
   ngOnInit(): void {
@@ -67,6 +68,15 @@ export class AsideComponent implements OnInit {
     this.settingService.loadUserSettingsSubject({
       saveToken: false,
     })
+  }
+// к инпоинту
+
+  initTours(): void {
+    this.http.get("http://localhost:3000/tours/").subscribe((data) => {})
+  }
+
+  deleteTours(): void {
+    this.http.get("http://localhost:3000/tours/remove").subscribe((data) => {})
   }
 
 }
