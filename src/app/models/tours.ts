@@ -6,7 +6,8 @@ export interface ITour {
   img: string,
   id: string,
   type: string,
-  date: string
+  date: string,
+  _id: string,
 }
 export interface ITourTypeSelect {
   label?: string,
