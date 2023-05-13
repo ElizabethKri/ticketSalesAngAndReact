@@ -11,7 +11,9 @@ export class TicketService {
 
   constructor(private ticketServiceRest: TicketRestService) { }
 
-  private ticketSubject = new Subject<ITourTypeSelect>()
+  private ticketSubject = new Subject<ITourTypeSelect>();
+  private ticketUpdateSubject = new Subject<ITour[]>();
+  readonly ticketUpdateSubject$ = this.ticketUpdateSubject.asObservable();
 
 
   // 1 вариант доступа к Observable
@@ -21,6 +23,10 @@ export class TicketService {
   // getTicketTypeObservable(): Observable<ITourTypeSelect> {
   //   return this.ticketSubject.asObservable();
   // }
+
+  updateTicketList(data: ITour[]) {
+    this.ticketUpdateSubject.next(data);
+  }
 
  updateTour(type:ITourTypeSelect): void {
    this.ticketSubject.next(type);
