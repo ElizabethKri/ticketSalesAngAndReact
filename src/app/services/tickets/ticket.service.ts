@@ -12,6 +12,8 @@ export class TicketService {
   constructor(private ticketServiceRest: TicketRestService) { }
 
   private ticketSubject = new Subject<ITourTypeSelect>();
+
+  //для удаления и формирования списка туров
   private ticketUpdateSubject = new Subject<ITour[]>();
   readonly ticketUpdateSubject$ = this.ticketUpdateSubject.asObservable();
 
@@ -31,6 +33,7 @@ export class TicketService {
  updateTour(type:ITourTypeSelect): void {
    this.ticketSubject.next(type);
   }
+
 
   //Вызывает метод ticketServiceRest
   getTickets(): Observable<ITour[]>{

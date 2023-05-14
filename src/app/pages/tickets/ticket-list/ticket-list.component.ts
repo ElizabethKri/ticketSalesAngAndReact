@@ -33,6 +33,12 @@ export class TicketListComponent implements OnInit {
 
   //Подписаться на изменения, которые произойдут при запросе на сервер, параметром передается асинхронная операция (data)
   ngOnInit(): void {
+
+    //формирование подписки
+    this.ticketService.ticketUpdateSubject$.subscribe((data) => {
+      this.tickets = data; //обновление значений
+    })
+
     this.ticketService.getTickets().subscribe(
       (data) => {
         this.tickets = data; //вставка нового шаблона

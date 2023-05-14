@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {IMenuType} from "../../../models/menuType";
-import {ITourTypeSelect} from "../../../models/tours";
+import {ITour, ITourTypeSelect} from "../../../models/tours";
 import {TicketService} from "../../../services/tickets/ticket.service";
 import {MessageService} from "primeng/api";
 import {SettingService} from "../../../services/setting/setting.service";
@@ -71,12 +71,18 @@ export class AsideComponent implements OnInit {
   }
 // к инпоинту
 
+  //формирование тура
   initTours(): void {
-    this.http.post("http://localhost:3000/tours/", '').subscribe((data) => {})
+    this.http.post<ITour[]>("http://localhost:3000/tours/", '').subscribe((data) => {
+      this.ticketService.updateTicketList(data); //рассылка
+    })
   }
 
+  //удаление тура
   deleteTours(): void {
-    this.http.delete("http://localhost:3000/tours/remove").subscribe((data) => {})
+    this.http.delete("http://localhost:3000/tours/remove").subscribe((data) => {
+      this.ticketService.updateTicketList([])
+    })
   }
 
 }
