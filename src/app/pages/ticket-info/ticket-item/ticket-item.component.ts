@@ -7,6 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
 import {forkJoin, fromEvent, Subscription} from "rxjs";
 import {TicketService} from "../../../services/tickets/ticket.service";
+import {IOrder} from "../../../models/order";
 
 
 
@@ -112,6 +113,16 @@ export class TicketItemComponent implements OnInit {
     this.ticketService.sendTourData(postData).subscribe()
     // console.log('postData', postData)
     // console.log('   this.userForm.getRawValue()', this.userForm.getRawValue())
+
+    const userId = this.userService.getUser()?.id || null;
+    const postObj: IOrder = {
+      age: postData.age,
+      birthDay: postData.birthDay,
+      cardNumber: postData.cardNumber,
+      tourId: postData._id,
+      userId: userId,
+    }
+    this.ticketService.sendTourData(postObj).subscribe()
   }
 
   selectDate(ev: Event): void{
