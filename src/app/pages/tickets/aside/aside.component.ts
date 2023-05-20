@@ -73,16 +73,19 @@ export class AsideComponent implements OnInit {
 
   //формирование тура
   initTours(): void {
-    this.http.post<ITour[]>("http://localhost:3000/tours/", '').subscribe((data) => {
+    this.ticketService.createTours().subscribe((data) => {
       this.ticketService.updateTicketList(data); //рассылка
     })
+
   }
 
   //удаление тура
   deleteTours(): void {
-    this.http.delete("http://localhost:3000/tours/remove").subscribe((data) => {
+
+    this.ticketService.deleteTours().subscribe((data) => {
       this.ticketService.updateTicketList([])
     })
+
   }
 
 }

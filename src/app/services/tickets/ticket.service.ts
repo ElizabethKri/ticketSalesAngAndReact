@@ -3,13 +3,14 @@ import {TicketRestService} from "../rest/ticket-rest.service";
 import {map, Observable, Subject} from "rxjs";
 import {ICustomTicketData, INearestTour, ITour, ITourLocation} from "../../models/tours"
 import {ITourTypeSelect} from "../../models/tours";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
 
-  constructor(private ticketServiceRest: TicketRestService) { }
+  constructor(private ticketServiceRest: TicketRestService, private http: HttpClient) { }
 
   private ticketSubject = new Subject<ITourTypeSelect>();
 
@@ -79,6 +80,20 @@ export class TicketService {
     return this.ticketServiceRest.createTour(body)
   }
 
+  getTicketById(paramId: string): Observable<ITour>{
+    return this.http.get<ITour>(`http://localhost:3000/tours/${paramId}`)
+  }
 
+  deleteTours(): Observable<any> {
+    return this.http.delete("http://localhost:3000/tours/");
+  }
+
+  createTours(): Observable<ITour[]> {
+    return this.http.post<ITour[]>("http://localhost:3000/tours/", '')
+  }
+
+  getAllTours(): Observable<ITour[]> {
+  return this.http.get<ITour[]>("http://localhost:3000/tours/")
+ }
 
 }
