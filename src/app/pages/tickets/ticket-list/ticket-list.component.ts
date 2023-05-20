@@ -4,7 +4,7 @@ import {ITour, ITourTypeSelect} from "../../../models/tours";
 import { Router} from "@angular/router";
 import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
 import {BlockStyleDirective} from "../../../directive/block-style.directive";
-import {debounceTime, fromEvent, Subscription} from "rxjs";
+import {debounceTime, fromEvent, Subject, Subscription, takeUntil} from "rxjs";
 
 
 @Component({
@@ -24,6 +24,7 @@ export class TicketListComponent implements OnInit {
   searchTicketSub: Subscription;
   ticketSearchValue: string;
   arr: string;
+  destroyer = new Subject();
 
 
   constructor(private ticketService: TicketService,
@@ -35,11 +36,11 @@ export class TicketListComponent implements OnInit {
   ngOnInit(): void {
 
     //формирование подписки
-    this.ticketService.ticketUpdateSubject$.subscribe((data) => {
+    this.ticketService.ticketUpdateSubject$.pipe(takeUntil(this.destroyer)).subscribe((data) => {
       this.tickets = data; //обновление значений
     })
 
-    this.ticketService.getTickets().subscribe(
+    this.ticketService.getAllTours().subscribe(
       (data) => {
         this.tickets = data; //вставка нового шаблона
         this.ticketsCopy = [...this.tickets] //содержит все данные
@@ -49,7 +50,7 @@ export class TicketListComponent implements OnInit {
     )
     //сформировать подписку на ticketSubject
     //1 вариант
-    this.tourUnsubscriber = this.ticketService.ticketType$.subscribe((data: ITourTypeSelect) => {
+     this.ticketService.ticketType$.pipe(takeUntil(this.destroyer)).subscribe((data: ITourTypeSelect) => {
       console.log('data', data)
     //2 вариант
     //this.tourUnsubscriber = this.ticketService.getTicketTypeObservable().subscribe((data:ITourTypeSelect) => {  console.log('data', data)  });
@@ -85,8 +86,10 @@ export class TicketListComponent implements OnInit {
   }
   ngAfterViewInit(){
     const fromEventOberver = fromEvent(this.ticketSearch.nativeElement, "keyup")
-    this.searchTicketSub = fromEventOberver.pipe(
-      debounceTime(200)).subscribe((ev: any) => {
+     fromEventOberver.pipe(
+       debounceTime(200),
+       takeUntil(this.destroyer)
+     ).subscribe((ev: any) => {
         if (this.ticketSearchValue) {
           this.tickets = this.ticketsCopy.filter((el) => {
             //проверка на строку, ищет при всех регистрах
@@ -101,13 +104,14 @@ export class TicketListComponent implements OnInit {
   }
   //выполняется отписка
   ngOnDestroy() {
-    this.tourUnsubscriber.unsubscribe();
+       this.destroyer.next(true);
+       this.destroyer.complete();
     this.searchTicketSub.unsubscribe();
   }
 
 
   goToTicketInfoPage(item: ITour){
-    this.router.navigate([`/tickets/ticket/${item.id}`])
+    this.router.navigate([`/tickets/ticket/${item._id}`])
   }
 
   directiveRenderComplete(ev: boolean){
