@@ -40,6 +40,7 @@ export class TourLoaderComponent implements OnInit {
     console.log('ev', ev)
     if (ev.target.files.length > 0){
       const file = ev.target.files[0];
+      console.log('file', file)
       //добавляет значение
       this.tourForm.patchValue({
         img: file
