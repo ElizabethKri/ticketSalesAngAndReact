@@ -64,9 +64,12 @@ export class TicketItemComponent implements OnInit {
     const paramValueId = routeIdParam || queryIDParam
     //если есть возвращает массив и ищет нужный элемент
     if(paramValueId){
-      const ticketStorage = this.ticketStorage.getStorage() //возвращает массив
-      this.ticket = ticketStorage.find((el) => el.id === paramValueId);
-      console.log('this.ticket', this.ticket)
+      this.ticketService.getTicketById(paramValueId).subscribe((data: ITour) =>{
+        this.ticket = data;
+      })
+      // const ticketStorage = this.ticketStorage.getStorage() //возвращает массив
+      // this.ticket = ticketStorage.find((el) => el.id === paramValueId);
+      // console.log('this.ticket', this.ticket)
     }
   }
 
