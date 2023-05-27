@@ -10,18 +10,20 @@ import {InputTextModule} from "primeng/inputtext";
 import { StatisticComponent } from './statistic/statistic.component';
 import {TableModule} from "primeng/table";
 import { TourLoaderComponent } from './tour-loader/tour-loader.component';
+import {OrdersModule} from "./orders/orders.module";
 
 
 @NgModule({
   declarations: [SettingComponent, ChangePasswordComponent, StatisticComponent, TourLoaderComponent],
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    SettingRoutingModule,
-    TabViewModule,
-    FormsModule,
-    InputTextModule,
-    TableModule
-  ]
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        SettingRoutingModule,
+        TabViewModule,
+        FormsModule,
+        InputTextModule,
+        TableModule,
+        OrdersModule
+    ]
 })
 export class SettingModule { }
