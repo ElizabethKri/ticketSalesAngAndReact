@@ -106,7 +106,7 @@ export class TicketListComponent implements OnInit {
   ngOnDestroy() {
        this.destroyer.next(true);
        this.destroyer.complete();
-    this.searchTicketSub.unsubscribe();
+       
   }
 
 
